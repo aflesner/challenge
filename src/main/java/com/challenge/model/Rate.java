@@ -63,6 +63,20 @@ public class Rate {
         return price;
     }
 
+    public boolean contains(RateRequest rateRequest) {
+        boolean contains = false;
+
+        if (rateRequest.getBegin().getDayOfWeek().equals(this.getDayOfWeek())
+                && rateRequest.getEnd().getDayOfWeek().equals(this.getDayOfWeek())) {
+            if (this.getBegin().isBefore(rateRequest.getBegin().toLocalTime())
+                    && this.getEnd().isAfter(rateRequest.getEnd().toLocalTime())) {
+                contains = true;
+            }
+        }
+
+        return contains;
+    }
+
     @Override
     public String toString() {
         return "Rate{" +

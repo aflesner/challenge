@@ -31,8 +31,6 @@ public class Handler extends AbstractHandler {
     private static ObjectReader JSON_READER;
     private static ObjectWriter JSON_WRITER;
 
-    private static ParkingRater PARKING_RATER;
-
     public Handler() {
         JSON_MAPPER = new ObjectMapper();
         SimpleModule module = new SimpleModule();
@@ -41,8 +39,6 @@ public class Handler extends AbstractHandler {
         JSON_MAPPER.registerModule(module);
         JSON_READER = JSON_MAPPER.readerFor(RateRequest.class);
         JSON_WRITER = JSON_MAPPER.writerFor(RateResponse.class);
-
-        PARKING_RATER = new ParkingRater();
     }
 
     public void handle(String target, Request baseRequest, HttpServletRequest request, HttpServletResponse response) {
@@ -64,7 +60,7 @@ public class Handler extends AbstractHandler {
                     try {
                         response.getWriter().close();
                     } catch (IOException e) {
-                        e.printStackTrace();
+                        //ignore
                     }
                 }
                 break;
@@ -85,7 +81,7 @@ public class Handler extends AbstractHandler {
                     try {
                         response.getWriter().close();
                     } catch (IOException e) {
-                        e.printStackTrace();
+                        //ignore
                     }
                 }
                 break;
@@ -101,7 +97,7 @@ public class Handler extends AbstractHandler {
                     try {
                         response.getWriter().close();
                     } catch (IOException e) {
-                        e.printStackTrace();
+                        //ignore
                     }
                 }
                 break;
@@ -117,7 +113,7 @@ public class Handler extends AbstractHandler {
         RateRequest rateRequest = JSON_READER.readValue(
                 request.getReader().lines().collect(Collectors.joining(System.lineSeparator())));
 
-        Rate rate = PARKING_RATER.getRate(rateRequest);
+        Rate rate = ParkingRater.getInstance().getRate(rateRequest);
         response.getWriter().write(JSON_WRITER.writeValueAsString(
                 new RateResponse(rateRequest.getBegin(), rateRequest.getEnd(), rate == null ? null : rate.getPrice())));
         response.getWriter().flush();
@@ -131,7 +127,7 @@ public class Handler extends AbstractHandler {
         RateRequest rateRequest = XmlRateRequestDeserializer
                 .deserialize(request.getReader().lines().collect(Collectors.joining(System.lineSeparator())));
 
-        Rate rate = PARKING_RATER.getRate(rateRequest);
+        Rate rate = ParkingRater.getInstance().getRate(rateRequest);
         String xml = XmlRateResponseSerializer.serialize(
                 new RateResponse(rateRequest.getBegin(), rateRequest.getEnd(), rate == null ? null : rate.getPrice()));
         response.getWriter().write(xml);
