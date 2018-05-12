@@ -76,3 +76,97 @@ Sample JSON for testing
 }
 
 ```
+
+## Building
+Requires JDK 8.
+
+To build a fatJar with all dependencies included execute:
+```text
+./gradlew fatJar
+```  
+
+## Starting
+execute:  
+```text
+java -jar build/libs/webapp-all-1.0-SNAPSHOT.jar
+```
+
+## Usage
+App will accept and return JSON or XML based on Content-Type HTTP header.  
+
+Expected JSON request object structure:  
+```json
+{
+  "begin":"2015-07-04T01:00:00Z", 
+  "end":"2015-07-04T07:00:00Z"
+}
+```
+
+Where begin is start of time of parking spot being requested and end is the ending time of parking spot being requested. App will return a JSON message similar to below when parking exists for that time period.  
+
+Response when a valid JSON request is submitted and parking exists:  
+```json
+{
+  "begin":"2015-07-01T07:00:00Z",
+  "end":"2015-07-01T12:00:00Z",
+  "price":1750
+}
+```
+
+Response when a valid JSON request is submitted and parking does not exist:
+```json
+{
+  "begin":"2015-07-04T01:00:00Z",
+  "end":"2015-07-04T07:00:00Z",
+  "price":"unavailable"
+}
+```
+
+Example requests for JSON: 
+```text
+curl -d '{"begin":"2015-07-04T01:00:00Z", "end":"2015-07-04T07:00:00Z"}' -H "Content-Type: application/json" -X POST http://localhost:8080  
+curl -d '{"begin":"2015-07-04T07:00:00Z", "end":"2015-07-04T12:00:00Z"}' -H "Content-Type: application/json" -X POST http://localhost:8080  
+curl -d '{"begin":"2015-07-01T07:00:00Z", "end":"2015-07-01T12:00:00Z"}' -H "Content-Type: application/json" -X POST http://localhost:8080  
+curl -d '{"begin":"2015-07-04T07:00:00Z", "end":"2015-07-04T20:00:00Z"}' -H "Content-Type: application/json" -X POST http://localhost:8080  
+curl -d '{"begin":"2015-07-04T01:01:00Z", "end":"2015-07-04T06:59:00Z"}' -H "Content-Type: application/json" -X POST http://localhost:8080
+``` 
+
+Expected XML request object structure:  
+
+```xml
+<?xml version="1.0" encoding="UTF-8"?>
+<RateRequest>
+    <begin>2015-07-04T01:00:00Z</begin>
+    <end>2015-07-04T07:00:00Z</end>
+</RateRequest>
+```
+
+Where begin is start of time of parking spot being requested and end is the ending time of parking spot being requested. App will return a XML message similar to below when parking exists for that time period.  
+
+Response when a valid XML request is submitted and parking exists:  
+```xml
+<?xml version='1.0' encoding='UTF-8'?>
+<RateResponse>
+    <begin>2015-07-01T07:00:00Z</begin>
+    <end>2015-07-01T12:00:00Z</end>
+    <price>1750</price>
+</RateResponse>
+```
+Response when a valid JSON request is submitted and parking does not exist:  
+```xml
+<?xml version='1.0' encoding='UTF-8'?>
+<RateResponse>
+    <begin>2015-07-04T01:00:00Z</begin>
+    <end>2015-07-04T07:00:00Z</end>
+    <price>unavailable</price>
+</RateResponse>
+```
+
+Example requests for XML:
+```text
+curl -d '<?xml version="1.0" encoding="UTF-8"?><RateRequest><begin>2015-07-04T01:00:00Z</begin><end>2015-07-04T07:00:00Z</end></RateRequest>' -H "Content-Type: application/xml" -X POST http://localhost:8080
+curl -d '<?xml version="1.0" encoding="UTF-8"?><RateRequest><begin>2015-07-04T07:00:00Z</begin><end>2015-07-04T12:00:00Z</end></RateRequest>' -H "Content-Type: application/xml" -X POST http://localhost:8080
+curl -d '<?xml version="1.0" encoding="UTF-8"?><RateRequest><begin>2015-07-01T07:00:00Z</begin><end>2015-07-01T12:00:00Z</end></RateRequest>' -H "Content-Type: application/xml" -X POST http://localhost:8080
+```  
+
+

@@ -22,6 +22,7 @@ import com.fasterxml.jackson.databind.module.SimpleModule;
 import org.eclipse.jetty.server.Request;
 import org.eclipse.jetty.server.handler.AbstractHandler;
 
+// Handler based on Jetty AbstractHandler
 public class Handler extends AbstractHandler {
     private static String JSON_500 = "{\"error\":\"Internal Server Error\"}";
     private static String XML_500 = "<?xml version='1.0' encoding='UTF-8'?><error>Internal Server Error</error>";

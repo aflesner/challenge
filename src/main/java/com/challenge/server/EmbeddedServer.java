@@ -3,6 +3,9 @@ package com.challenge.server;
 import com.challenge.handler.Handler;
 import org.eclipse.jetty.server.Server;
 
+/**
+ * Simple Jetty embedded server for HTTP Server functionality.
+ */
 public class EmbeddedServer {
     public static void main(String[] args) throws Exception
     {

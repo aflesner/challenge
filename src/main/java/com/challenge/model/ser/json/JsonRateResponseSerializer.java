@@ -20,8 +20,12 @@ public class JsonRateResponseSerializer extends StdSerializer<RateResponse> {
     @Override
     public void serialize(RateResponse value, JsonGenerator gen, SerializerProvider provider) throws IOException {
         gen.writeStartObject();
+
+        // write out dates as ISO date string with ZonedDateTime "Z"
         gen.writeStringField("begin", value.getBegin().format(DateTimeFormatter.ISO_ZONED_DATE_TIME));
         gen.writeStringField("end", value.getEnd().format(DateTimeFormatter.ISO_ZONED_DATE_TIME));
+
+        // if Rate object is null parking spot was unavailable
         if (value.getRate() == null) {
             gen.writeStringField("price", "unavailable");
         } else {

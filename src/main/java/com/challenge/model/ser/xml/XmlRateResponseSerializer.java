@@ -19,12 +19,14 @@ public class XmlRateResponseSerializer {
         xmlStreamWriter.writeStartDocument();
         xmlStreamWriter.writeStartElement("RateResponse");
         xmlStreamWriter.writeStartElement("begin");
+        // write out dates as ISO date string with ZonedDateTime "Z"
         xmlStreamWriter.writeCharacters(rateResponse.getBegin().format(DateTimeFormatter.ISO_ZONED_DATE_TIME));
         xmlStreamWriter.writeEndElement();
         xmlStreamWriter.writeStartElement("end");
         xmlStreamWriter.writeCharacters(rateResponse.getEnd().format(DateTimeFormatter.ISO_ZONED_DATE_TIME));
         xmlStreamWriter.writeEndElement();
         xmlStreamWriter.writeStartElement("price");
+        // if Rate object is null parking spot was unavailable
         xmlStreamWriter.writeCharacters(
                 rateResponse.getRate() == null ? "unavailable" : String.valueOf(rateResponse.getRate()));
         xmlStreamWriter.writeEndElement();

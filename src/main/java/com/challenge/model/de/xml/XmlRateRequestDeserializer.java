@@ -23,6 +23,7 @@ public class XmlRateRequestDeserializer {
         xmlStreamReader.next();
         String end = xmlStreamReader.getElementText();
 
+        // parse ZonedDateTime with "Z" zone id to LocalDateTime
         RateRequest rateRequest = new RateRequest(LocalDateTime.parse(begin, DateTimeFormatter.ISO_DATE_TIME),
             LocalDateTime.parse(end, DateTimeFormatter.ISO_DATE_TIME));
 

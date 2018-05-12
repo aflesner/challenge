@@ -24,6 +24,7 @@ public class JsonRateRequestDeserializer extends StdDeserializer<RateRequest> {
             throws IOException {
         JsonNode node = jsonParser.getCodec().readTree(jsonParser);
 
+        // parse ZonedDateTime with "Z" zone id to LocalDateTime
         return new RateRequest(LocalDateTime.parse(node.get("begin").asText(), DateTimeFormatter.ISO_DATE_TIME),
                 LocalDateTime.parse(node.get("end").asText(), DateTimeFormatter.ISO_DATE_TIME));
     }

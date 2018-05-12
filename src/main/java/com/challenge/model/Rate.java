@@ -4,6 +4,9 @@ import java.time.DayOfWeek;
 import java.time.LocalTime;
 import java.time.format.DateTimeFormatter;
 
+/**
+    Each {@code Rate} object represents a block of time that parking is available at a given price
+ */
 public class Rate {
     private static DateTimeFormatter DATE_TIME_FORMATTER = DateTimeFormatter.ofPattern("HHmm");
 
